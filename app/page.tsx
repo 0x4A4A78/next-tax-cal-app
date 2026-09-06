@@ -1,69 +1,165 @@
-import Image from "next/image";
-
+"use client";
+import { useMemo, useState } from "react";
+const fmt = (n: number) =>
+  new Intl.NumberFormat("th-TH", { maximumFractionDigits: 0 }).format(n);
+const bands = [
+  [150000, 0],
+  [300000, 0.05],
+  [500000, 0.1],
+  [750000, 0.15],
+  [1000000, 0.2],
+  [2000000, 0.25],
+  [5000000, 0.3],
+  [Infinity, 0.35],
+];
+function calcTax(income: number) {
+  let prev = 0,
+    tax = 0;
+  for (const [top, rate] of bands) {
+    const taxable = Math.max(0, Math.min(income, top) - prev);
+    tax += taxable * rate;
+    prev = top;
+    if (income <= top) break;
+  }
+  return tax;
+}
 export default function Home() {
+  const [income, setIncome] = useState("900000");
+  const [deduct, setDeduct] = useState("60000");
+  const [other, setOther] = useState("30000");
+  const gross = Number(income) || 0;
+  const expense = Math.min(gross * 0.5, 100000);
+  const net = Math.max(
+    0,
+    gross - expense - (Number(deduct) || 0) - (Number(other) || 0),
+  );
+  const tax = useMemo(() => calcTax(net), [net]);
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
+    <main className="shell">
+      <div className="wrap">
+        <nav className="topbar">
+          <div className="brand">
+            <span>TAXWISE</span>
+          </div>
+          <span className="toplink">วางแผนภาษีอย่างมั่นใจ</span>
+        </nav>
+        <section className="hero">
+          <div className="eyebrow">Personal tax / 02</div>
+          <h1>
+            ภาษีไม่ต้อง
+            <br />
+            เป็นเรื่องยาก
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p>
+            เห็นภาพเงินได้สุทธิและภาษีที่ต้องจ่ายในไม่กี่วินาที
+            ด้วยโครงสร้างภาษีแบบขั้นบันไดของประเทศไทย
           </p>
+        </section>
+        <div className="grid">
+          <section className="card">
+            <h2>ข้อมูลรายได้ต่อปี</h2>
+            <div className="form-grid">
+              <label className="field full">
+                <span className="label">
+                  รายได้รวมต่อปี <small>(บาท)</small>
+                </span>
+                <input
+                  className="input"
+                  type="number"
+                  min="0"
+                  value={income}
+                  onChange={(e) => setIncome(e.target.value)}
+                />
+              </label>
+              <label className="field">
+                <span className="label">ค่าลดหย่อนส่วนตัว</span>
+                <input
+                  className="input"
+                  type="number"
+                  min="0"
+                  value={deduct}
+                  onChange={(e) => setDeduct(e.target.value)}
+                />
+              </label>
+              <label className="field">
+                <span className="label">ค่าลดหย่อนอื่น ๆ</span>
+                <input
+                  className="input"
+                  type="number"
+                  min="0"
+                  value={other}
+                  onChange={(e) => setOther(e.target.value)}
+                />
+              </label>
+            </div>
+            <div className="metric-row" style={{ marginTop: 20 }}>
+              <span>ค่าใช้จ่ายอัตโนมัติ (สูงสุด 100,000)</span>
+              <strong>฿{fmt(expense)}</strong>
+            </div>
+            <p className="note">
+              คำนวณตามอัตราภาษีเงินได้บุคคลธรรมดาแบบขั้นบันได
+            </p>
+          </section>
+          <section className="card result">
+            <div className="result-main">
+              <div className="result-label">ภาษีที่ต้องชำระโดยประมาณ</div>
+              <div className="big-number">฿{fmt(tax)}</div>
+              <span className="badge">
+                Effective rate {gross ? ((tax / gross) * 100).toFixed(1) : 0}%
+              </span>
+            </div>
+            <div>
+              <div className="metric-row">
+                <span>เงินได้สุทธิ</span>
+                <strong>฿{fmt(net)}</strong>
+              </div>
+              <div className="metric-row">
+                <span>เงินได้หลังหักภาษี</span>
+                <strong>฿{fmt(Math.max(0, net - tax))}</strong>
+              </div>
+            </div>
+          </section>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <section className="card" style={{ marginTop: 18 }}>
+          <h2>สรุปการคำนวณ</h2>
+          <div className="table-wrap">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>รายการ</th>
+                  <th>จำนวนเงิน</th>
+                  <th>อัตรา</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>รายได้รวม</td>
+                  <td>฿{fmt(gross)}</td>
+                  <td>—</td>
+                </tr>
+                <tr>
+                  <td>หักค่าใช้จ่าย</td>
+                  <td>-฿{fmt(expense)}</td>
+                  <td>50%</td>
+                </tr>
+                <tr>
+                  <td>หักค่าลดหย่อน</td>
+                  <td>-฿{fmt((Number(deduct) || 0) + (Number(other) || 0))}</td>
+                  <td>—</td>
+                </tr>
+                <tr>
+                  <td>เงินได้สุทธิ</td>
+                  <td>฿{fmt(net)}</td>
+                  <td>ขั้นบันได</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+        <div className="footer">
+          ตัวเลขเป็นประมาณการเบื้องต้น ควรตรวจสอบสิทธิ์ลดหย่อนก่อนยื่นแบบจริง
         </div>
-      </main>
-    </div>
+      </div>
+    </main>
   );
 }
