@@ -1,158 +1,62 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-ink: #161616;
-  --color-surface: #323232;
-  --color-brand: #1d65ff;
-  --color-copy: #f5f5f5;
-  --color-muted: #a8a8a8;
-  --color-line: #4a4a4a;
+  --color-ink: #fff9f5;
+  --color-surface: #ffffff;
+  --color-brand: #ef6c4d;
+  --color-copy: #2b1b17;
+  --color-muted: #806f68;
+  --color-line: #ebdcd5;
 }
 
 @layer base {
-  :root {
-    color-scheme: dark;
-  }
-  * {
-    box-sizing: border-box;
-  }
-  body {
-    margin: 0;
-    min-width: 320px;
-    background: #161616;
-    color: #f5f5f5;
-    font-family: Arial, "Noto Sans Thai", sans-serif;
-  }
-  button,
-  input,
-  select {
-    font: inherit;
-  }
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-width: 320px; background: #fff9f5; color: #2b1b17; font-family: Arial, "Noto Sans Thai", sans-serif; }
+  button, input, select { font: inherit; }
 }
 
 @layer components {
-  .shell {
-    @apply min-h-screen bg-ink px-4 py-6 text-copy sm:px-6 sm:py-8;
-  }
-  .wrap {
-    @apply mx-auto max-w-6xl;
-  }
-  .topbar {
-    @apply mb-14 flex items-center justify-between;
-  }
-  .brand {
-    @apply text-sm font-bold tracking-[0.22em] text-white;
-  }
-  .toplink {
-    @apply text-right text-xs text-muted;
-  }
-  .hero {
-    @apply mb-8 max-w-2xl;
-  }
-  .eyebrow {
-    @apply text-xs font-bold uppercase tracking-[0.18em] text-brand;
-  }
-  .hero h1 {
-    @apply my-3 text-5xl font-bold leading-[1.02] tracking-[-0.06em] text-white sm:text-7xl;
-  }
-  .hero p {
-    @apply m-0 max-w-xl text-sm leading-7 text-muted sm:text-base;
-  }
-  .grid {
-    @apply grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(320px,0.8fr)];
-  }
-  .card {
-    @apply rounded-2xl border border-line bg-surface p-5 shadow-xl shadow-black/20 sm:p-6;
-  }
-  .card h2 {
-    @apply m-0 mb-5 text-base font-semibold text-white;
-  }
-  .form-grid {
-    @apply grid gap-4 sm:grid-cols-2;
-  }
-  .field {
-    @apply flex flex-col gap-2;
-  }
-  .field.full {
-    @apply sm:col-span-2;
-  }
-  .label {
-    @apply text-xs text-muted;
-  }
-  .input,
-  .select {
-    @apply w-full rounded-lg border border-line bg-ink px-3.5 py-3 text-sm text-white outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/25;
-  }
-  .button {
-    @apply cursor-pointer rounded-lg border border-brand bg-brand px-4 py-3 text-sm font-bold text-white transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-50;
-  }
-  .button.ghost {
-    @apply border-line bg-transparent text-copy hover:border-brand hover:bg-brand/10;
-  }
-  .result {
-    @apply flex min-h-64 flex-col justify-between;
-  }
-  .result-main {
-    @apply pb-5;
-  }
-  .result-label {
-    @apply text-xs text-muted;
-  }
-  .big-number {
-    @apply my-3 text-5xl font-bold leading-none tracking-[-0.07em] text-white sm:text-7xl;
-  }
-  .unit {
-    @apply text-sm font-normal tracking-normal text-muted;
-  }
-  .badge {
-    @apply inline-flex rounded-full border border-brand/40 bg-brand/15 px-2.5 py-1.5 text-xs font-bold text-blue-300;
-  }
-  .tip {
-    @apply border-t border-line pt-4 text-sm leading-6 text-copy/80;
-  }
-  .range {
-    @apply mt-5 grid grid-cols-4 gap-1;
-  }
-  .range span {
-    @apply h-1 rounded-full bg-line;
-  }
-  .range span:nth-child(2) {
-    @apply bg-blue-500;
-  }
-  .footer,
-  .note {
-    @apply text-xs leading-5 text-muted;
-  }
-  .footer {
-    @apply mt-5;
-  }
-  .metric-row {
-    @apply flex justify-between gap-4 border-b border-line py-3 text-sm last:border-0;
-  }
-  .metric-row span {
-    @apply text-muted;
-  }
-  .metric-row strong {
-    @apply text-base text-white;
-  }
-  .table-wrap {
-    @apply mt-4 overflow-x-auto;
-  }
-  .table {
-    @apply w-full border-collapse text-xs;
-  }
-  .table th,
-  .table td {
-    @apply whitespace-nowrap border-b border-line px-2.5 py-3 text-right;
-  }
-  .table th:first-child,
-  .table td:first-child {
-    @apply text-left;
-  }
-  .table th {
-    @apply font-normal text-muted;
-  }
-  .table td {
-    @apply text-white;
-  }
+  .shell { @apply min-h-screen bg-ink px-4 py-6 text-copy sm:px-6 sm:py-8; }
+  .wrap { @apply mx-auto max-w-6xl; }
+  .topbar { @apply mb-14 flex items-center justify-between; }
+  .brand { @apply flex items-center gap-3 text-sm font-bold tracking-[0.22em] text-copy; }
+  .brand-icon { @apply grid size-9 place-items-center rounded-xl bg-brand text-white shadow-lg shadow-orange-100/70; }
+  .toplink { @apply text-right text-xs text-muted; }
+  .hero { @apply mb-8 max-w-2xl; }
+  .eyebrow { @apply text-xs font-bold uppercase tracking-[0.18em] text-brand; }
+  .hero h1 { @apply my-3 text-5xl font-bold leading-[1.02] tracking-[-0.06em] text-copy sm:text-7xl; }
+  .hero p { @apply m-0 max-w-xl text-sm leading-7 text-muted sm:text-base; }
+  .grid { @apply grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(320px,0.8fr)]; }
+  .card { @apply rounded-3xl border border-line bg-surface p-5 shadow-xl shadow-orange-100/70 sm:p-6; }
+  .card h2 { @apply m-0 mb-5 text-base font-semibold text-copy; }
+  .form-grid { @apply grid gap-4 sm:grid-cols-2; }
+  .field { @apply flex flex-col gap-2; }
+  .field.full { @apply sm:col-span-2; }
+  .label { @apply text-xs text-muted; }
+  .input, .select { @apply w-full rounded-xl border border-line bg-ink px-3.5 py-3 text-sm text-copy outline-none transition focus:border-brand focus:ring-orange-500/20; }
+  .button { @apply cursor-pointer rounded-xl border border-brand bg-brand px-4 py-3 text-sm font-bold text-white transition hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-50; }
+  .button.ghost { @apply border-line bg-surface text-copy hover:border-brand hover:bg-brand/10; }
+  .result { @apply flex min-h-64 flex-col justify-between; }
+  .result-main { @apply pb-5; }
+  .result-label { @apply text-xs text-muted; }
+  .big-number { @apply my-3 text-5xl font-bold leading-none tracking-[-0.07em] text-copy sm:text-7xl; }
+  .unit { @apply text-sm font-normal tracking-normal text-muted; }
+  .badge { @apply inline-flex rounded-full border px-2.5 py-1.5 text-xs font-bold border-orange-200 bg-orange-50 text-orange-700; }
+  .tip { @apply border-t border-line pt-4 text-sm leading-6 text-copy/80; }
+  .range { @apply mt-5 grid grid-cols-4 gap-1; }
+  .range span { @apply h-1 rounded-full bg-line; }
+  .range span:nth-child(2) { @apply bg-orange-500; }
+  .footer, .note { @apply text-xs leading-5 text-muted; }
+  .footer { @apply mt-5; }
+  .metric-row { @apply flex justify-between gap-4 border-b border-line py-3 text-sm last:border-0; }
+  .metric-row span { @apply text-muted; }
+  .metric-row strong { @apply text-base text-copy; }
+  .table-wrap { @apply mt-4 overflow-x-auto; }
+  .table { @apply w-full border-collapse text-xs; }
+  .table th, .table td { @apply whitespace-nowrap border-b border-line px-2.5 py-3 text-right; }
+  .table th:first-child, .table td:first-child { @apply text-left; }
+  .table th { @apply font-normal text-muted; }
+  .table td { @apply text-copy; }
+  .result { @apply bg-orange-50/60 border-orange-200; }
 }
