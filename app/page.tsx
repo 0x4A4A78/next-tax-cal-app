@@ -23,7 +23,7 @@ function calcTax(income: number) {
   }
   return tax;
 }
-<svg className="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M5 19V9M12 19V5M19 19v-7"/><path d="M3 19h18"/><path d="m5 7 5-3 4 2 5-3"/></svg>
+const BrandIcon = () => (<BrandIcon />);
 
 export default function Home() {
   const [income, setIncome] = useState("900000");
